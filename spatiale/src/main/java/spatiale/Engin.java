@@ -15,16 +15,18 @@ abstract class Engin {
     private Etat etat;
     private List<Integer> position;
     public int idMission;
+    private final StrategieExploration strategieExploration;
 
-    public Engin(int id, int nom, Etat etat,  List<Integer> position) {
+    public Engin(int id, int nom, Etat etat,  List<Integer> position, StrategieExploration strategieExploration) {
         this.id = id;
         this.nom = nom;
         this.etat = etat;
         this.position = position;
+        this.strategieExploration = java.util.Objects.requireNonNull(strategieExploration);
     }
 
-    public Engin(int id, int nom, Etat etat) {
-        this(id, nom, etat, List.of(-1, -1));
+    public Engin(int id, int nom, Etat etat, StrategieExploration strategieExploration) {
+        this(id, nom, etat, List.of(-1, -1), strategieExploration);
     }
 
     public void setNom(int nom) {
@@ -78,9 +80,13 @@ abstract class Engin {
         }
     }
 
-    abstract void cartographier();
-
-    abstract void prelever();
+    public void explorer(CorpsCeleste corpsCeleste) {
+        java.util.Objects.requireNonNull(corpsCeleste);
+        if (etat != Etat.EnMission) {
+            throw new IllegalStateException("Seul un engin en mission peut explorer.");
+        }
+        strategieExploration.explorer(corpsCeleste, position.get(0), position.get(1)); // Remplacez corpsCeleste par l'objet CorpsCeleste approprié
+    }
 
     public void reparer(Object personne) {
         if (!(personne instanceof Operateur operateur)) {

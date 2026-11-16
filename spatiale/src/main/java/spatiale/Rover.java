@@ -1,8 +1,8 @@
 package spatiale;
 
 public class Rover extends Engin {
-    @Override
-    public void prelever() {
-        
+
+    public Rover(int id, int nom) {
+        super(id, nom, Etat.Disponible, new ExplorationPrelevement());
     }
 }

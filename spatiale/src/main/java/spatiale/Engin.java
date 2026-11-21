@@ -89,7 +89,8 @@ abstract class Engin {
     }
 
     public void reparer(Object personne) {
-        if (!(personne instanceof Operateur operateur)) {
+        if (!(personne instanceof Operateur operateur)) { // si personne n'est pas un operateur alors return
+                                                          // si personne un operateur alors operateur = personne, comme ça on a accès aux méthodes de Operateur
             System.out.println("Erreur : la personne passée en argument n'est pas un opérateur.");
             return;
         }

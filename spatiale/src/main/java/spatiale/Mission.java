@@ -46,4 +46,6 @@ public class Mission {
     public void demarrerMission() {
 
     }
+
+    // faire une interface ou qqch pour gerer les missions en cours/planifiées ? genre missionsController ou chais pas
 }

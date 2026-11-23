@@ -19,7 +19,18 @@ enum TypeTerrain {
     Desert
 }
 
-record Zone(TypeTerrain type, int interet, boolean preleve, boolean cartographie) {}
+//record Zone(TypeTerrain type, int interet, boolean preleve, boolean cartographie) {}
+// je propose de créer une classe Zone à la place, je trouve que ça sera mieux de déjà faire ça dans un autre fichier, et puis je pense que record est pas adapté vu que ya des choses qui changent dedans (état d'exploration)
+// on peut faire un record coordonnees par contre, si tu veux qu'on ajoute quand même record pour tester ce que c'est ? vu que les coordonnées d'une zone changent pas
+
+// je la mets quand même ici et pas dans un fichier à part
+public class Zone {
+    TypeTerrain type;
+    int interet; // 0-10
+    boolean preleve;
+    boolean cartographie;
+}
+
 
 public class CorpsCeleste {
     private static final int LONGUEUR_MAX = 10;

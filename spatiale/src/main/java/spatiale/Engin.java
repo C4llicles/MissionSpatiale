@@ -88,8 +88,6 @@ abstract class Engin {
         strategieExploration.explorer(corpsCeleste, position.get(0), position.get(1)); // Remplacez corpsCeleste par l'objet CorpsCeleste approprié
     }
 
-    // ELIOTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-    // ici j'ai changé Object personne en Personne personne, ça devrait pas poser problème mais sinon tu rechanges
     public void reparer(Personne personne) {
         if (!(personne instanceof Operateur operateur)) { // si personne n'est pas un operateur alors return
                                                           // si personne un operateur alors operateur = personne, comme ça on a accès aux méthodes de Operateur

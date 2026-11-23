@@ -1,35 +1,48 @@
 package spatiale;
 
 public class Cadet extends Personne {
-    private Personne tuteur;
-    private int cptMissionsReussies;
+    private Operateur tuteur;
+    private int compteurMissionsReussies;
+    private boolean missionEnCours;
 
     // faire un if tuteur null {throw} ici et try catch pour la création ? pour ne pas pouvoir créer un cadet sans tuteur par exemple
-    public Cadet(String nom, String prenom, Genre genre, String telephone, Personne newTuteur) {
+    public Cadet(String nom, String prenom, Genre genre, String telephone, Operateur newTuteur) {
         super(nom, prenom, genre, telephone);
-        if (newTuteur == null) {
-            printf("Erreur : le cadet doit avoir un tuteur");
-            return;
-        }
-        if (!(newTuteur instanceof Operateur op)) {
-            printf("Erreur : le tuteur du cadet doit etre un operateur");
-            return;
-        }
-        tuteur = op;
-        cptMissionsReussies = 0;
+        tuteur = newTuteur;
+        newTuteur.getCadetsSousTutelle().add(this);
+        compteurMissionsReussies = 0;
     }
 
-    public void changerTuteur(Personne newTuteur) {
-        if (!(newTuteur instanceof Operateur op)) {
-            printf("Erreur : le tuteur du cadet doit etre un operateur");
-            return;
+    public Personne getTuteur() {
+        return tuteur;
+    }
+
+    public int getCompteurMissionsReussies() {
+        return compteurMissionsReussies;
+    }
+
+    public boolean isMissionEnCours() {
+        return missionEnCours;
+    }
+
+    public void incrementerCompteurMissionsReussies() {
+        compteurMissionsReussies++;
+    }
+
+    public void changerTuteur(Operateur newTuteur) {
+        tuteur.getCadetsSousTutelle().remove(this);
+        tuteur = newTuteur;
+        tuteur.getCadetsSousTutelle().add(this);
+    }
+
+    public Operateur promotion() {
+        if (compteurMissionsReussies < 3) {
+            throw new IllegalStateException("Le cadet n'a pas encore réussi 3 missions et ne peut pas être promu.");
         }
-        tuteur = op;
+    tuteur.getCadetsSousTutelle().remove(this);
+    return new Operateur(getNom(), getPrenom(), getGenre(), getTelephone(), tuteur.getCompetences());
     }
 
-    public void promotion() {
-        // à faire (ici ou dans Operateur / ailleurs ?)
-    }
+    
 
-    // après une mission, il faut incrémenter cptMissionsReussies
 }

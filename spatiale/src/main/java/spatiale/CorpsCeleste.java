@@ -29,6 +29,7 @@ public class CorpsCeleste {
     private int largeur;
     private Zone[][] carte;
     private TypeMonde typeMonde;
+    private int nombreZonesObjectifs;
 
     public CorpsCeleste(int id, int nom, int longueur, int largeur, Zone[][] carte, TypeMonde typeMonde) {
         this.id = id;
@@ -95,6 +96,10 @@ public class CorpsCeleste {
         this.typeMonde = typeMonde;
     }
 
+    public void setNombreZonesObjectifs(int nombreZonesObjectifs) {
+        this.nombreZonesObjectifs = nombreZonesObjectifs;
+    }
+
     public int getId() {
         return id;
     }
@@ -125,6 +130,10 @@ public class CorpsCeleste {
 
     public int getLargeurMax() {
         return LARGEUR_MAX;
+    }
+
+    public int getNombreZonesObjectifs() {
+        return nombreZonesObjectifs;
     }
 
     public void creerCarte() {

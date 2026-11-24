@@ -18,7 +18,6 @@ public class Mission {
     private Directeur directeur;
     private List<Operateur> operateurs;
     private List<Engin> engins;
-    private int[][] zonesObjectifs; // un tableau contenant les indices des zones objectives
     private volatile EtatMission etat = EtatMission.PLANIFIEE; // volatile pour que le programme puisse consulter l'état pendant la simulation
 
     public Mission(String newNom, CorpsCeleste newCorpsCeleste, LocalDate newDate, int newBudget, Directeur newDirecteur, List<Operateur> newOperateurs, List<Engin>newEngins) {
@@ -68,7 +67,20 @@ public class Mission {
                 }
             }
         }
-        // booléan réussite = true si 70% des zones objectives ont été explorées
+
+        int cptZonesObjExplorees = 0;
+        boolean reussite;
+        // boolean réussite = true si 70% des zones objectives ont été explorées
+        for (int x = 0; x < corpsCeleste.getLongueur(); x++) {
+            for (int y = 0; y < corpsCeleste.getLargeur(); y++) {
+                if (corpsCeleste.getCarte()[x][y].objectif) {
+                    if (corpsCeleste.getCarte()[x][y].preleve || corpsCeleste.getCarte()[x][y].cartographie) {
+                        cptZonesObjExplorees++;
+                    }
+                }
+            }
+        }
+        reussite = (cptZonesObjExplorees >= corpsCeleste.getNombreZonesObjectifs());
         RapportMission rapport = new RapportMission(nom, dateLancement, corpsCeleste.getNom(), nbreZonesExplorees, nbreEchantillons, interetTotal, reussite, budget);
     }
 }

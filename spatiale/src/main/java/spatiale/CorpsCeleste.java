@@ -25,8 +25,8 @@ public class CorpsCeleste {
     private static final int LARGEUR_MAX = 10;
     private int id;
     private int nom;
-    private int longueur;
-    private int largeur;
+    private int longueur; // x
+    private int largeur; // y
     private Zone[][] carte;
     private TypeMonde typeMonde;
     private int nombreZonesObjectifs;

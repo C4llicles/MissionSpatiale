@@ -34,7 +34,9 @@ public class Mission {
         if (lon < 1 || lon > corpsCeleste.getLongueurMax() || larg < 1 || larg > corpsCeleste.getLargeurMax()) {
             throw new IllegalArgumentException("La longueur doit être entre 1 et " + corpsCeleste.getLongueurMax() + ", la largeur entre 1 et " + corpsCeleste.getLargeurMax());
         }
-        corpsCeleste.setNombreZonesObjectifs(1 + random.nextInt(lon * larg)); // nbre de zones objectifs entre 1 et toutes les zones possibles
+        int minZonesObjectifs = (int) 0.25 * (lon * larg); // 25% des zones
+        int maxZonesObjectifs = (int) 0.75 * (lon * larg); // 75% des zones
+        corpsCeleste.setNombreZonesObjectifs(random.nextInt(maxZonesObjectifs * minZonesObjectifs + 1) + minZonesObjectifs);
         for (int i = 0; i < corpsCeleste.getNombreZonesObjectifs(); i++) {
             int x, y;
             do {
@@ -46,8 +48,26 @@ public class Mission {
         }
     }
 
+    public boolean verifierMissionReussie() {
+        int cptZonesExplorees = 0;
+        for (int x = 0; x < corpsCeleste.getLongueur(); x++) {
+            for (int y = 0; y < corpsCeleste.getLargeur(); y++) {
+                if (corpsCeleste.getCarte()[x][y].objectif) {
+                    if (corpsCeleste.getCarte()[x][y].preleve) {
+                        cptZonesExplorees++;
+                    }
+                }
+            }
+        }
+        if (Config.SEUIL_REUSSITE*cptZonesExplorees >= corpsCeleste.getNombreZonesObjectifs()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public void demarrerMission() {
+        boolean loop = true;
 
     }
 
@@ -57,9 +77,11 @@ public class Mission {
             return;
         }
         for (Operateur op : operateurs) {
+            op.setMissionEnCours(false);
             for (Cadet cadet : op.getCadetsSousTutelle()) {
                 if (cadet.isMissionEnCours()) {
                     cadet.incrementerCompteurMissionsReussies();
+                    cadet.setMissionEnCours(false);
                 }
                 if (cadet.getCompteurMissionsReussies() >= 3) {
                     op.getCadetsSousTutelle().remove(cadet);
@@ -67,20 +89,11 @@ public class Mission {
                 }
             }
         }
+        directeur.incrementerMissionsReussies(budget);
+        directeur.decrementerMissionsEnCours();
 
-        int cptZonesObjExplorees = 0;
-        boolean reussite;
-        // boolean réussite = true si 70% des zones objectives ont été explorées
-        for (int x = 0; x < corpsCeleste.getLongueur(); x++) {
-            for (int y = 0; y < corpsCeleste.getLargeur(); y++) {
-                if (corpsCeleste.getCarte()[x][y].objectif) {
-                    if (corpsCeleste.getCarte()[x][y].preleve || corpsCeleste.getCarte()[x][y].cartographie) {
-                        cptZonesObjExplorees++;
-                    }
-                }
-            }
-        }
-        reussite = (cptZonesObjExplorees >= corpsCeleste.getNombreZonesObjectifs());
+        boolean reussite = verifierMissionReussie();
+        
         RapportMission rapport = new RapportMission(nom, dateLancement, corpsCeleste.getNom(), nbreZonesExplorees, nbreEchantillons, interetTotal, reussite, budget);
     }
 }

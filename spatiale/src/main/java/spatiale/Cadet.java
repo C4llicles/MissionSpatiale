@@ -21,6 +21,10 @@ public class Cadet extends Personne {
         return compteurMissionsReussies;
     }
 
+    public void setMissionEnCours(boolean missionEnCours) {
+        this.missionEnCours = missionEnCours;
+    }
+
     public boolean isMissionEnCours() {
         return missionEnCours;
     }

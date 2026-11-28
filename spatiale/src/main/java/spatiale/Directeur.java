@@ -85,11 +85,11 @@ public class Directeur extends Personne {
     }
 
     public void afficherStatistiques() {
-        System.out.println("Statistiques du Directeur :");
-        System.out.println("Nombre de missions réussies : " + nombreMissionsReussies);
-        System.out.println("Budget total des missions réussies : " + budgetTotalMissionsReussies);
-        System.out.println("Nombre de missions échouées : " + nombreMissionsEchouees);
-        System.out.println("Budget total des missions échouées : " + budgetTotalMissionsEchouees);
-        System.out.println("Nombre de missions en cours : " + nombreDeMissionsEnCours);
+        Main.afficher("Statistiques du Directeur :");
+        Main.afficher("Nombre de missions réussies : " + nombreMissionsReussies);
+        Main.afficher("Budget total des missions réussies : " + budgetTotalMissionsReussies);
+        Main.afficher("Nombre de missions échouées : " + nombreMissionsEchouees);
+        Main.afficher("Budget total des missions échouées : " + budgetTotalMissionsEchouees);
+        Main.afficher("Nombre de missions en cours : " + nombreDeMissionsEnCours);
     }
 }

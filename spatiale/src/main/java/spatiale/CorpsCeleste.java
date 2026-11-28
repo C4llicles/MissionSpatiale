@@ -166,4 +166,40 @@ public class CorpsCeleste {
         verifierCoordonnees(x, y);
         return carte[x][y];
     }
+
+    public int getNombreZonesExplorees() {
+        int count = 0;
+        for (int i = 0; i < longueur; i++) {
+            for (int j = 0; j < largeur; j++) {
+                if (carte[i][j].isCartographie()) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public int getNombreEchantillonsPreleves() {
+        int count = 0;
+        for (int i = 0; i < longueur; i++) {
+            for (int j = 0; j < largeur; j++) {
+                if (carte[i][j].isPreleve()) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public int getInteretTotal() {
+        int total = 0;
+        for (int i = 0; i < longueur; i++) {
+            for (int j = 0; j < largeur; j++) {
+                if (carte[i][j].isPreleve()) {
+                    total += carte[i][j].getInteret();
+                }
+            }
+        }
+        return total;
+    }
 }

@@ -66,6 +66,20 @@ public class Mission {
         }
     }
 
+    public boolean verifierMissionEchouee() {
+        if (!(etat == EtatMission.EN_COURS)) {
+            System.out.println("Mission pas en cours, donc impossible à vérifier");
+            return false;
+        } else {
+            for (Engin engin : engins) {
+                if (engin.getEtat() != Etat.Detruit && engin.getEtat() != Etat.Panne && engin.getStrategieExploration() instanceof ExplorationPrelevement) {
+                    return false; // au moins un engin pouvant prelever et donc terminer la mission n'est pas détruit, donc la mission n'est pas échouée
+                }
+            }
+            return true; // tous les engins sont détruits, donc la mission est échouée
+        }
+    }
+
     public void demarrerMission() {
         boolean loop = true;
 
@@ -75,6 +89,13 @@ public class Mission {
         if (!(etat == EtatMission.EN_COURS)) {
             System.out.println("Mission pas en cours, donc impossible à terminer");
             return;
+        }
+        if (verifierMissionEchouee()) {
+            System.out.println("La mission a échoué. Tous les engins capables de prélever ont été détruits.");
+        } else if (verifierMissionReussie()) {
+            System.out.println("La mission a réussi !");
+        } else {
+            System.out.println("La mission n'est pas encore terminée.");
         }
         for (Operateur op : operateurs) {
             op.setMissionEnCours(false);

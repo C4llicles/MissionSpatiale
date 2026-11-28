@@ -6,15 +6,18 @@ public class Zone {
     boolean preleve;
     boolean cartographie;
     boolean objectif;
+    boolean aRisque;
 
     public Zone(TypeTerrain type, int interet, boolean preleve, boolean cartographie) {
         this.type = type;
         this.interet = interet;
         this.preleve = preleve;
         this.cartographie = cartographie;
+        this.objectif = false;
+        
     }
 
-    public TypeTerrain getType() {
+    public TypeTerrain getTypeTerrain() {
         return type;
     }
 
@@ -32,6 +35,10 @@ public class Zone {
 
     public boolean isObjectif() {
         return objectif;
+    }
+
+    public boolean isARisque() {
+        return aRisque;
     }
 
     public void setType(TypeTerrain type) {

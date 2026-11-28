@@ -137,6 +137,7 @@ public class CorpsCeleste {
     }
 
     public void creerCarte() {
+        carte = new Zone[longueur][largeur];
         for (int i = 0; i < longueur; i++) {
             for (int j = 0 ; j < largeur; j++) {
                 TypeTerrain typeTerrain = TypeTerrain.values()[(int) (Math.random() * TypeTerrain.values().length)];
@@ -144,6 +145,13 @@ public class CorpsCeleste {
                 boolean preleve = false;
                 boolean cartographie = false;
                 carte[i][j] = new Zone(typeTerrain, interet, preleve, cartographie);
+            }
+        }
+        for (int i = 0; i < longueur; i++) {
+            for (int j = 0 ; j < largeur; j++) {
+                if (Math.random() < 0.05) { // 5% de chance qu'une zone soit à risque
+                    carte[i][j].aRisque = true;
+                }
             }
         }
     }

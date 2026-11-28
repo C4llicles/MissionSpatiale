@@ -9,6 +9,11 @@ enum Etat {
     Panne
 }
 
+enum TypeDeplacement {
+    AERIEN,
+    TERRESTRE
+}
+
 abstract class Engin {
     private final int id;
     private int nom;
@@ -16,6 +21,7 @@ abstract class Engin {
     private List<Integer> position;
     public int idMission;
     private final StrategieExploration strategieExploration;
+    private TypeDeplacement typeDeplacement;
 
     public Engin(int id, int nom, Etat etat,  List<Integer> position, StrategieExploration strategieExploration) {
         this.id = id;
@@ -41,6 +47,10 @@ abstract class Engin {
         this.etat = etat;
     }
 
+    public void setTypeDeplacement(TypeDeplacement typeDeplacement) {
+        this.typeDeplacement = java.util.Objects.requireNonNull(typeDeplacement);
+    }
+
     public void assignerMission(int idMission) {
         this.idMission = idMission;
     }
@@ -61,22 +71,56 @@ abstract class Engin {
         return etat;
     }
 
+    public TypeDeplacement getTypeDeplacement() {
+        return typeDeplacement;
+    }
+
     public int getIdMission() {
         return idMission;
     }
 
-    public void deplacer(List<Integer> newPosition, int idMission) {
-        if (this.etat == Etat.EnMission && this.idMission == idMission) {
-            this.position = newPosition;
-            System.out.println("L'engin a été déplacé vers la nouvelle position : " + newPosition);
-        } else if (this.etat == Etat.EnMission && this.idMission != idMission) {
+    public StrategieExploration getStrategieExploration() {
+        return strategieExploration;
+    }
+
+    public void deplacer(List<Integer> newPosition, int idMission, CorpsCeleste corpsCeleste) {
+        if (this.etat == Etat.EnMission && this.idMission != idMission) {
             System.out.println("Cet engin n'est pas disponible pour cette mission. Il est actuellement occupé par une autre mission.");
         } else if (this.etat == Etat.Panne) {
             System.out.println("L'engin est en panne, il ne peut pas être déplacé. Veuillez le réparer avant de tenter de le déplacer.");
         } else if (this.etat == Etat.Detruit) {
             System.out.println("L'engin est détruit et ne peut plus être déplacé.");
-        } else {
-            System.out.println("L'engin n'est pas engagé dans une mission.");
+        } else if (this.etat == Etat.EnMission && this.idMission == idMission) {
+            if (this.typeDeplacement == TypeDeplacement.AERIEN) {
+                System.out.println("L'engin est de type aérien et peut se déplacer vers n'importe quelle zone du corps céleste.");
+                position = newPosition;
+                System.out.println("L'engin a été déplacé vers la nouvelle position : " + newPosition);
+                panneAleatoire();
+            } else if (this.typeDeplacement == TypeDeplacement.TERRESTRE) {
+                if (corpsCeleste.getCarte()[newPosition.get(0)][newPosition.get(1)].isCartographie()) {
+                    if (corpsCeleste.getCarte()[newPosition.get(0)][newPosition.get(1)].isARisque()) {
+                        System.out.println("Attention : la zone vers laquelle vous tentez de déplacer l'engin est à risque. Déplacement annulé.");
+                        return;
+                    } else {
+                        System.out.println("La zone vers laquelle vous tentez de déplacer l'engin est sûre. Déplacement autorisé.");
+                        position = newPosition;
+                        System.out.println("L'engin a été déplacé vers la nouvelle position : " + newPosition);
+                        panneAleatoire();
+                    }
+                } else {
+                    System.out.println("La zone vers laquelle vous tentez de déplacer l'engin n'a pas été cartographiée. Attention : le déplacement vous expose à des risques inconnus. Déplacement autorisé mais soyez prudent...");
+                    corpsCeleste.getCarte()[newPosition.get(0)][newPosition.get(1)].setCartographie(true);
+                    if (corpsCeleste.getCarte()[newPosition.get(0)][newPosition.get(1)].isARisque()) {
+                        System.out.println("La zone vers laquelle vous vous êtes déplacé était une zone à risque. L'engin a été détruit.");
+                        this.etat = Etat.Detruit;
+                    } else {
+                        System.out.println("La zone vers laquelle vous vous êtes déplacé était une zone sûre.");
+                        position = newPosition;
+                        System.out.println("L'engin a été déplacé vers la nouvelle position : " + newPosition);
+                        panneAleatoire();
+                    }
+                }
+            }
         }
     }
 
@@ -85,7 +129,10 @@ abstract class Engin {
         if (etat != Etat.EnMission) {
             throw new IllegalStateException("Seul un engin en mission peut explorer.");
         }
-        strategieExploration.explorer(corpsCeleste, position.get(0), position.get(1)); // Remplacez corpsCeleste par l'objet CorpsCeleste approprié
+        if (position.get(0) < 0 || position.get(1) < 0 || position.get(0) >= corpsCeleste.getLongueur() || position.get(1) >= corpsCeleste.getLargeur()) {
+            throw new IllegalArgumentException("La position de l'engin est en dehors des limites du corps céleste.");
+        }
+        strategieExploration.explorer(corpsCeleste, position.get(0), position.get(1));
     }
 
     public void reparer(Personne personne) {
@@ -95,7 +142,7 @@ abstract class Engin {
             return;
         }
         
-        if (!operateur.getCompetences().contains(Operateur.Competence.MAINTENANCE)) {
+        if (!operateur.getCompetences().contains(Competence.MAINTENANCE)) {
             System.out.println("Erreur : l'opérateur n'a pas les compétences nécessaires pour réparer l'engin.");
             return;
         }
@@ -107,6 +154,13 @@ abstract class Engin {
             System.out.println("L'engin est détruit et ne peut pas être réparé.");
         } else {
             System.out.println("L'engin n'est pas en panne et n'a pas besoin de réparation.");
+        }
+    }
+
+    public void panneAleatoire() {
+        if (Math.random() < 0.025) { // 10% de chance de tomber en panne
+            this.etat = Etat.Panne;
+            System.out.println("L'engin est tombé en panne.");
         }
     }
 }

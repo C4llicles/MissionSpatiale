@@ -53,11 +53,7 @@ public class Operateur extends Personne {
         }
         return cadetsSousTutelle;
     }
-
-    // ELIOT
-    // jsuis pas sûre comment ça marche ici, regarde stp j'ai jamais vraiment fait de throw
-    // jsp si je dois faire un return ou si ça le fait tout seul
-    // et j'ai la flemme de regarer maintenant j'ai mal à la tête
+    
     public void ajouterCompetence(Competence comp) {
         if (competences.size() >= 3) {
             throw new IllegalArgumentException ("L'operateur concerne a deja le nombre maximal de competences (3)");

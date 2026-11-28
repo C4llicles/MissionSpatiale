@@ -24,14 +24,14 @@ public class CorpsCeleste {
     private static final int LONGUEUR_MAX = 10;
     private static final int LARGEUR_MAX = 10;
     private int id;
-    private int nom;
+    private String nom;
     private int longueur; // x
     private int largeur; // y
     private Zone[][] carte;
     private TypeMonde typeMonde;
     private int nombreZonesObjectifs;
 
-    public CorpsCeleste(int id, int nom, int longueur, int largeur, Zone[][] carte, TypeMonde typeMonde) {
+    public CorpsCeleste(int id, String nom, int longueur, int largeur, Zone[][] carte, TypeMonde typeMonde) {
         this.id = id;
         this.nom = nom;
         this.longueur = longueur;
@@ -40,7 +40,7 @@ public class CorpsCeleste {
         this.typeMonde = typeMonde;
     }
 
-    public CorpsCeleste(int id, int nom, int longueur, int largeur, TypeMonde typeMonde) {
+    public CorpsCeleste(int id, String nom, int longueur, int largeur, TypeMonde typeMonde) {
         this.id = id;
         this.nom = nom;
         this.longueur = longueur;
@@ -49,7 +49,7 @@ public class CorpsCeleste {
         creerCarte();
     }
 
-    public CorpsCeleste(int id, int nom, int longueur, int largeur) {
+    public CorpsCeleste(int id, String nom, int longueur, int largeur) {
         this.id = id;
         this.nom = nom;
         this.longueur = longueur;
@@ -58,7 +58,7 @@ public class CorpsCeleste {
         creerCarte();
     }
 
-    public CorpsCeleste(int id, int nom, TypeMonde typeMonde) {
+    public CorpsCeleste(int id, String nom, TypeMonde typeMonde) {
         this.id = id;
         this.nom = nom;
         this.typeMonde = typeMonde;
@@ -67,7 +67,7 @@ public class CorpsCeleste {
         creerCarte();
     }
 
-    public CorpsCeleste(int id, int nom) {
+    public CorpsCeleste(int id, String nom) {
         this.id = id;
         this.nom = nom;
         this.typeMonde = TypeMonde.values()[(int) (Math.random() * TypeMonde.values().length)];
@@ -76,7 +76,7 @@ public class CorpsCeleste {
         creerCarte();
     }
 
-    public void setNom(int nom) {
+    public void setNom(String nom) {
         this.nom = nom;
     }
 
@@ -104,7 +104,7 @@ public class CorpsCeleste {
         return id;
     }
 
-    public int getNom() {
+    public String getNom() {
         return nom;
     }
 

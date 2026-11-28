@@ -85,12 +85,16 @@ abstract class Engin {
 
     public void deplacer(List<Integer> newPosition, int idMission, CorpsCeleste corpsCeleste) {
         if (this.etat == Etat.EnMission && this.idMission != idMission) {
+            // throw new IllegalStateException("Cet engin n'est pas disponible pour cette mission. Il est actuellement occupé par une autre mission.");
             System.out.println("Cet engin n'est pas disponible pour cette mission. Il est actuellement occupé par une autre mission.");
         } else if (this.etat == Etat.Panne) {
+            // throw new IllegalStateException("L'engin est en panne, il ne peut pas être déplacé. Veuillez le réparer avant de tenter de le déplacer.");
             System.out.println("L'engin est en panne, il ne peut pas être déplacé. Veuillez le réparer avant de tenter de le déplacer.");
         } else if (this.etat == Etat.Detruit) {
+            // throw new IllegalStateException("L'engin est détruit et ne peut plus être déplacé.");
             System.out.println("L'engin est détruit et ne peut plus être déplacé.");
         } else if (this.etat == Etat.EnMission && this.idMission == idMission) {
+            // on peut supprimer tous les prints qui suivent je suppose
             if (this.typeDeplacement == TypeDeplacement.AERIEN) {
                 System.out.println("L'engin est de type aérien et peut se déplacer vers n'importe quelle zone du corps céleste.");
                 position = newPosition;
